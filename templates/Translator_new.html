@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>English to Hindi Sign Language Translator</title>
+    <style>
+        body { text-align: center; background-color: #eef6fc; font-family: Arial, sans-serif; }
+        input, button { padding: 10px; margin: 10px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>English to Hindi Sign Language Translator</h1>
+    <input type="text" id="wordInput" placeholder="Enter English word">
+    <button onclick="translateWord()">Translate</button>
+
+    <div id="translationResult"></div>
+    <div id="videoResult" style="margin-top:20px;"></div>
+
+    <!-- Include the script from earlier here -->
+    <script>
+        function translateWord() {
+            const word = document.getElementById("wordInput").value.trim();
+            if (word === "") {
+                alert("Please enter a word.");
+                return;
+            }
+    
+            fetch(`/translate?word=${encodeURIComponent(word)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById("translationResult").innerHTML = 
+                            `<p><strong>Hindi Translation:</strong> ${data.hindi_translation}</p>`;
+    
+                        if (data.video_found) {
+                            document.getElementById("videoResult").innerHTML = 
+                                `<video width="320" height="240" controls>
+                                    <source src="${data.video_url}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                 </video>`;
+                        } else {
+                            document.getElementById("videoResult").innerHTML = 
+                                "<p style='color:red;'>No video found for this word.</p>";
+                        }
+                    } else {
+                        document.getElementById("translationResult").innerHTML = 
+                            "<p style='color:red;'>Translation failed.</p>";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById("translationResult").innerHTML = 
+                        "<p style='color:red;'>Error occurred while translating.</p>";
+                });
+        }
+    </script>
+    
+</body>
+</html>
