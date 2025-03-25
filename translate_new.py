@@ -10,7 +10,7 @@ translator = Translator()
 
 @app.route('/')
 def index():
-    return render_template('Translator_new.html')
+    return render_template('index.html')
 
 @app.route('/translate_new')
 def translate_word():
