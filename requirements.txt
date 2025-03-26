@@ -1,4 +1,5 @@
-flask
+Flask
 googletrans==4.0.0-rc1
+opencv-python
+numpy
 gunicorn
-opencv-python-headless
